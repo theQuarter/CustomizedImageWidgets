@@ -1,0 +1,77 @@
+// ignore_for_file: file_names, use_key_in_widget_constructors
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class CustomImage extends StatelessWidget {
+  final String image;
+  final double? height;
+  final double? width;
+  final BoxFit? fit;
+  final String? placeholder;
+  final String? onError;
+  final Color? color;
+  const CustomImage({
+    required this.image,
+    this.height,
+    this.width,
+    this.fit,
+    this.placeholder,
+    this.color,
+    this.onError,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // print(image);
+    return CachedNetworkImage(
+      imageUrl: image.replaceAll('\\', '/'),
+      height: height,
+      width: width,
+      fit: fit,
+      placeholder: (context, imageUrl) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          color: Colors.black.withOpacity(0.1),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("YCt books".toUpperCase(),
+                    style: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                        color: Colors.black.withOpacity(0.3),
+                        fontSize: 14,
+                        //fontFamily: "Montserrat",
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )),
+                Text("Loading".toUpperCase(),
+                    style: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                        color: Colors.black.withOpacity(0.3),
+                        fontSize: 10,
+                        //fontFamily: "Montserrat",
+                        fontWeight: FontWeight.w300,
+                      ),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+      errorWidget: (context, imageUrl, stackTrace) {
+        return Image.asset(
+          onError != null
+              ? onError!
+              : "assets/images/empty_book.png", // your placeholder
+          height: height,
+          width: width,
+          fit: fit,
+          color: color,
+        );
+      },
+    );
+  }
+}
